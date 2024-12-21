@@ -3,47 +3,47 @@ const io = new Server(8000, { cors: true });
 
 class Rooms {
     constructor() {
-        this.rooms = {}; // Initialize the rooms container
+        this.rooms = {}; 
     }
 
-    // Add a room by roomId
+   
     addRoom(roomId) {
         if (!this.rooms[roomId]) {
             this.rooms[roomId] = {};
         }
     }
 
-    // Add a socket to a specific room
+   
     addSocketToRoom(roomId, socketId, name, permission) {
         if (!this.rooms[roomId]) {
-            this.addRoom(roomId); // Ensure the room exists
+            this.addRoom(roomId); 
         }
         this.rooms[roomId][socketId] = { name, permission };
     }
 
-    // Get all rooms
+    
     getRooms() {
         return this.rooms;
     }
 
-    // Get a specific room
+    
     getRoom(roomId) {
         return this.rooms[roomId] || null;
     }
 
-    // Get a specific socket in a room
+    
     getSocket(roomId, socketId) {
         return this.rooms[roomId]?.[socketId] || null;
     }
 
-    // Delete a specific socket from a room
+    
     deleteSocket(roomId, socketId) {
         if (this.rooms[roomId]) {
             delete this.rooms[roomId][socketId];
         }
     }
 
-    // Delete a room entirely
+    
     deleteRoom(roomId) {
         delete this.rooms[roomId];
     }
@@ -139,14 +139,14 @@ io.on("connection", (socket) => {
     const room = roomsManager.getRoom(data.roomId);
 
     if (!room) {
-        // Emit 'join:room' with false if the room does not exist
+        
         console.error(`Room ${data.roomId} does not exist.`);
         socket.emit("join:room", { success: false, message: "Room does not exist." });
         return;
     }
 
     if (Object.keys(room).length >= 6) {
-        // Emit 'join:room' with false if the room is full
+       
         socket.emit("join:room", { success: false, message: "Room is full." });
         return;
     }
@@ -157,7 +157,7 @@ io.on("connection", (socket) => {
         return;
     }
 
-    // Add the socket to the room and assign the role
+    // Assign roles
     socket.join(data.roomId);
     roomsManager.addSocketToRoom(data.roomId, socket.id, data.name, "member");
     roomsManager.rooms[data.roomId][socket.id].role = role;
@@ -172,7 +172,7 @@ io.on("connection", (socket) => {
     console.log(`Socket ${socket.id} joined room ${data.roomId} as ${role}`);
     console.log(roomsManager.getRooms());
     if (Object.keys(room).length === 6) {
-        // Emit an event with player data excluding their roles
+        
         const players = Object.entries(room).map(([socketId, playerData]) => ({
             socketId,
             name: playerData.name,
