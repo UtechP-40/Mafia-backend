@@ -161,8 +161,11 @@ io.on("connection", (socket) => {
     socket.join(data.roomId);
     roomsManager.addSocketToRoom(data.roomId, socket.id, data.name, "member");
     roomsManager.rooms[data.roomId][socket.id].role = role;
-
-    io.sockets.in(data.roomId).emit("join:room", {
+    // io.to(socket.id).emit("join:room",{...data,
+    //     socketID: socket.id,
+    //     role,
+    //     success: true,})
+    io.to(data.roomId).emit("join:room", {
         ...data,
         socketID: socket.id,
         role,
@@ -240,3 +243,70 @@ io.on("connection", (socket) => {
 
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const MAX_PLAYERS = 6;
+// let players = {};
+
+// io.on('connection', (socket) => {
+//     console.log('New user connected:', socket.id);
+
+//     // Add player to the lobby if there's space
+    
+//         players[socket.id] = { /* You can add player data here */ };
+//         socket.emit('joined', { id: socket.id, players });
+
+//         // Notify other players about the new join
+//         socket.broadcast.emit('user-connected', socket.id);
+    
+
+//     socket.on('offer', (data) => {
+//         socket.to(data.target).emit('offer', {
+//             sdp: data.sdp,
+//             sender: socket.id
+//         });
+//     });
+
+//     socket.on('answer', (data) => {
+//         socket.to(data.target).emit('answer', {
+//             sdp: data.sdp,
+//             sender: socket.id
+//         });
+//     });
+
+//     socket.on('ice-candidate', (data) => {
+//         socket.to(data.target).emit('ice-candidate', {
+//             candidate: data.candidate,
+//             sender: socket.id
+//         });
+//     });
+
+//     socket.on('disconnect', () => {
+//         console.log('User disconnected:', socket.id);
+//         delete players[socket.id];
+//         socket.broadcast.emit('user-disconnected', socket.id);
+//     });
+// });
