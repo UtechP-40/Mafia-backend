@@ -1,5 +1,24 @@
+const express = require("express");
+const http = require("http");
 const { Server } = require("socket.io");
-const io = new Server(8000, { cors: true });
+
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
+
+app.get("/", (req, res) => {
+    res.send("Socket.IO server is running!");
+});
 
 class Rooms {
     constructor() {
@@ -161,10 +180,7 @@ io.on("connection", (socket) => {
     socket.join(data.roomId);
     roomsManager.addSocketToRoom(data.roomId, socket.id, data.name, "member");
     roomsManager.rooms[data.roomId][socket.id].role = role;
-    // io.to(socket.id).emit("join:room",{...data,
-    //     socketID: socket.id,
-    //     role,
-    //     success: true,})
+
     io.to(data.roomId).emit("join:room", {
         ...data,
         socketID: socket.id,
@@ -200,14 +216,6 @@ io.on("connection", (socket) => {
     socket.on("connect:check", ({ roomId, name }) => {
         socket.join(roomId);
     });
-
-
-
-
-
-
-
-
 
 
     //Voice Chat Logic
@@ -246,67 +254,7 @@ io.on("connection", (socket) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const MAX_PLAYERS = 6;
-// let players = {};
-
-// io.on('connection', (socket) => {
-//     console.log('New user connected:', socket.id);
-
-//     // Add player to the lobby if there's space
-    
-//         players[socket.id] = { /* You can add player data here */ };
-//         socket.emit('joined', { id: socket.id, players });
-
-//         // Notify other players about the new join
-//         socket.broadcast.emit('user-connected', socket.id);
-    
-
-//     socket.on('offer', (data) => {
-//         socket.to(data.target).emit('offer', {
-//             sdp: data.sdp,
-//             sender: socket.id
-//         });
-//     });
-
-//     socket.on('answer', (data) => {
-//         socket.to(data.target).emit('answer', {
-//             sdp: data.sdp,
-//             sender: socket.id
-//         });
-//     });
-
-//     socket.on('ice-candidate', (data) => {
-//         socket.to(data.target).emit('ice-candidate', {
-//             candidate: data.candidate,
-//             sender: socket.id
-//         });
-//     });
-
-//     socket.on('disconnect', () => {
-//         console.log('User disconnected:', socket.id);
-//         delete players[socket.id];
-//         socket.broadcast.emit('user-disconnected', socket.id);
-//     });
-// });
+const PORT = 8000;
+server.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
