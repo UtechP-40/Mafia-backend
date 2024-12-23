@@ -24,9 +24,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: ["https://0z9dc935-5173.inc1.devtunnels.ms","http://localhost:5173"],
-        methods: ["GET", "POST"],
-        credentials: true,
+        origin: ["https://0z9dc935-5173.inc1.devtunnels.ms","http://localhost:5173"]
     }
 });
 
