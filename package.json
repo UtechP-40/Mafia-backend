@@ -5,12 +5,13 @@
   "main": "api/index.js",
   "scripts": {
     "start": "node api/index.js",
-    "test": "nodemon index.js"
+    "test": "nodemon api/index.js"
   },
   "keywords": [],
   "author": "Pradeep Pandey",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "socket.io": "^4.8.1"
   }

@@ -2,7 +2,20 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 
+const cors = require("cors");
+
 const app = express();
+// const PORT = process.env.PORT || 3000;
+
+// Use CORS middleware
+app.use(
+  cors({
+    origin: ["https://0z9dc935-5173.inc1.devtunnels.ms/"], // Replace with your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, 
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
