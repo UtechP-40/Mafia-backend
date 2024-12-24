@@ -51,6 +51,7 @@ class Rooms {
     }
 }
 
+
 // Usage example
 export default new Rooms();
 

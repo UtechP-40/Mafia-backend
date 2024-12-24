@@ -10,7 +10,7 @@ const app = express();
 // Use CORS middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173","https://0z9dc935-5173.inc1.devtunnels.ms/"], // Replace with your frontend URL
+    origin: "*",//["http://localhost:5173","https://0z9dc935-5173.inc1.devtunnels.ms/"], // Replace with your frontend URL
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, 
@@ -24,7 +24,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: ["https://0z9dc935-5173.inc1.devtunnels.ms","http://localhost:5173"]
+        origin: "*"//["https://0z9dc935-5173.inc1.devtunnels.ms","http://localhost:5173"]
     }
 });
 
